@@ -1,4 +1,4 @@
-package br.com.content4devs.service;
+package br.com.content4devs.service.imlp;
 
 import br.com.content4devs.dto.ProductInputDTO;
 import br.com.content4devs.dto.ProductOutputDTO;

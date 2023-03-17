@@ -17,6 +17,7 @@ message ProductResponseList{
   repeated ProductResponse products =1; //como se fosse array, lista de produtos
 }
 message EmptyRequest{}
+message EmptyResponse{}
 
 
 message RequestById {
@@ -25,13 +26,13 @@ message RequestById {
 
 message ProductRequest {
   string name = 1;//números são assigning field numbers (flag) que o protobuf utiliza para na hora que serializar os dados, saber posicionamente onde está os tipos de mensagens
-  string price = 2;
+  double price = 2;
   int32 quantity_in_stock = 3;
 
 }
 message ProductResponse {
   int64 id = 1;
   string name = 2;
-  string price = 3;
+  double price = 3;
   int32 quantity_in_stock = 4;
 }

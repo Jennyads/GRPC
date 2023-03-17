@@ -1,7 +1,8 @@
 package br.com.content4devs.util;
 
 import br.com.content4devs.domain.Product;
-import org.junit.jupiter.api.Assertions;
+import br.com.content4devs.dto.ProductInputDTO;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ProductConverterUtilTest {
@@ -15,5 +16,16 @@ public class ProductConverterUtilTest {
         Assertions.assertThat(product)
                 .usingRecursiveComparison()
                 .isEqualTo(productOutputDto);
+    }
+
+    @Test
+    public void productInputProductTest() {
+        var productInput = new ProductInputDTO("product name", 10.00, 10);
+        var product = ProductConverterUtil
+                .productInputDtoToProduct(productInput);
+
+        Assertions.assertThat(productInput)
+                .usingRecursiveComparison()
+                .isEqualTo(product);
     }
 }

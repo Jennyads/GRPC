@@ -1,8 +1,8 @@
-package br.com.content4devs.service.impl;
+package br.com.content4devs.service.imlp.impl;
 import br.com.content4devs.dto.ProductInputDTO;
 import br.com.content4devs.dto.ProductOutputDTO;
 import br.com.content4devs.repository.ProductRepository;
-import br.com.content4devs.service.IproductService;
+import br.com.content4devs.service.imlp.IproductService;
 import br.com.content4devs.util.ProductConverterUtil;
 import org.springframework.stereotype.Service;
 
