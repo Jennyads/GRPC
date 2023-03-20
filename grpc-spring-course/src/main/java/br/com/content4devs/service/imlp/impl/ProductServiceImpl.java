@@ -1,6 +1,7 @@
 package br.com.content4devs.service.imlp.impl;
 import br.com.content4devs.dto.ProductInputDTO;
 import br.com.content4devs.dto.ProductOutputDTO;
+import br.com.content4devs.exception.ProductAlreadyExistsException;
 import br.com.content4devs.repository.ProductRepository;
 import br.com.content4devs.service.imlp.IproductService;
 import br.com.content4devs.util.ProductConverterUtil;
@@ -21,6 +22,7 @@ public class ProductServiceImpl implements IproductService {
 
     @Override
     public ProductOutputDTO create(ProductInputDTO inputDTO) {
+        checkDuplicity(inputDTO.getName());
         var product = ProductConverterUtil.productInputDtoToProduct(inputDTO);
         var productCreated = this.productRepository.save(product);
         return ProductConverterUtil.productToProductOutputDto(productCreated);
@@ -39,6 +41,14 @@ public class ProductServiceImpl implements IproductService {
     @Override
     public List<ProductOutputDTO> findAll() {
         return null;
+    }
+
+    private void checkDuplicity(String name){
+        this.productRepository.findByNameIgnoreCase(name)
+                .ifPresent(e -> {
+                    throw new ProductAlreadyExistsException(name);
+
+                });
     }
 }
 
