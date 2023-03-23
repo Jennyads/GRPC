@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="885fc86c-c8b1-497c-924f-8da10e5b12ea" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -29,7 +32,11 @@
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
-    "last_opened_file_path": "/home/jeniffer/github/GRPC",
+    "last_opened_file_path": "/home/jeniffer/github/GRPC/grpc-spring-course",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -47,6 +54,8 @@
       <workItem from="1678466859426" duration="37000" />
       <workItem from="1678466950694" duration="166000" />
       <workItem from="1678723426568" duration="61000" />
+      <workItem from="1679504423707" duration="612000" />
+      <workItem from="1679587372141" duration="350000" />
     </task>
     <servers />
   </component>
