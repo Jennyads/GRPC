@@ -4,6 +4,7 @@ package br.com.content4devs.resources;
 import br.com.content4devs.*;
 import io.grpc.StatusRuntimeException;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.assertj.core.api.Assertions;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -58,6 +59,25 @@ public class ProductResourceIntegrationTest {
         assertThatExceptionOfType(StatusRuntimeException.class)
                 .isThrownBy(() -> serviceBlockingStub.create(productRequest))
                 .withMessage("ALREADY_EXISTS: Produto Product A já cadastrado no sistema");
+
+    }
+    @Test
+    @DisplayName("when findById method is call with valid id a product is returned")
+    public void findByIdSuccessTest() {
+        RequestById request = RequestById.newBuilder().setId(1L).build();
+        ProductResponse productResponse = serviceBlockingStub.findById(request);
+
+        Assertions.assertThat(productResponse.getId()).isEqualTo(request.getId());
+        Assertions.assertThat(productResponse.getName()).isEqualTo("Product A");
+    }
+    @Test
+    @DisplayName("when findById is call with invalid throw ProductNotFoundException")
+    public void findByIdExceptionTest() {
+        RequestById request = RequestById.newBuilder().setId(100L).build();
+
+        assertThatExceptionOfType(StatusRuntimeException.class)
+                .isThrownBy(() -> serviceBlockingStub.findById(request))
+                .withMessage("NOT_FOUND: Produto com id 100 não encontrado.");
 
     }
 }

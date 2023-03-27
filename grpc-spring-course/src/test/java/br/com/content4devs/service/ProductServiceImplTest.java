@@ -1,4 +1,4 @@
-package br.com.content4devs.service.imp;
+package br.com.content4devs.service;
 
 import br.com.content4devs.domain.Product;
 import br.com.content4devs.dto.ProductInputDTO;
@@ -6,7 +6,7 @@ import br.com.content4devs.dto.ProductOutputDTO;
 import br.com.content4devs.exception.ProductAlreadyExistsException;
 import br.com.content4devs.exception.ProductNotFoundException;
 import br.com.content4devs.repository.ProductRepository;
-import br.com.content4devs.service.imp.impl.ProductServiceImpl;
+import br.com.content4devs.service.impl.ProductServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -81,6 +80,27 @@ public class ProductServiceImplTest {
 
         assertThatExceptionOfType(ProductNotFoundException.class)
                 .isThrownBy(() -> productService.findById(id));
+    }
+    @Test
+    @DisplayName("when delete product is call with id should does not throw")
+    public void deleteSucessTest() {
+        Long id = 1L;
+        Product product = new Product(1L, "product name", 10.00, 10);
+
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
+
+        Assertions.assertThatNoException().isThrownBy(() -> productService.findById(id));
+
+    }
+    @Test
+    @DisplayName("when delete product is call with invalid id throws ProductNotFoundException")
+    public void deleteExceptionTest() {
+        Long id = 1L;
+
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(ProductNotFoundException.class)
+                .isThrownBy(() -> productService.delete(id));
     }
 
 

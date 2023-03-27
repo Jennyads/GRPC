@@ -1,10 +1,10 @@
-package br.com.content4devs.service.imp.impl;
+package br.com.content4devs.service.impl;
 import br.com.content4devs.dto.ProductInputDTO;
 import br.com.content4devs.dto.ProductOutputDTO;
 import br.com.content4devs.exception.ProductAlreadyExistsException;
 import br.com.content4devs.exception.ProductNotFoundException;
 import br.com.content4devs.repository.ProductRepository;
-import br.com.content4devs.service.imp.IproductService;
+import br.com.content4devs.service.IproductService;
 import br.com.content4devs.util.ProductConverterUtil;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +39,9 @@ public class ProductServiceImpl implements IproductService {
 
     @Override
     public void delete(Long id) {
+        var product = this.productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+        this.productRepository.delete(product);
 
     }
 
