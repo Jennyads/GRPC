@@ -5,7 +5,7 @@ import br.com.content4devs.ProductResponse;
 import br.com.content4devs.ProductServiceGrpc;
 import br.com.content4devs.dto.ProductInputDTO;
 import br.com.content4devs.dto.ProductOutputDTO;
-import br.com.content4devs.service.imlp.IproductService;
+import br.com.content4devs.service.imp.IproductService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 @GrpcService

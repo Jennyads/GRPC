@@ -22,7 +22,6 @@ public class ProductResourceIntegrationTest {
 
     @GrpcClient("inProcess")
     private ProductServiceGrpc.ProductServiceBlockingStub serviceBlockingStub;
-
     @Autowired
     private Flyway flyway;
 
@@ -47,7 +46,6 @@ public class ProductResourceIntegrationTest {
                 .comparingOnlyFields("name", "price", "quantity_in_stock")
                 .isEqualTo(productResponse);
     }
-
     @Test
     @DisplayName("when create is called with duplicated name, throw ProductAlreadyExistsException")
     public void createProductAlreadyExistsExceptionTest() {
@@ -59,7 +57,7 @@ public class ProductResourceIntegrationTest {
 
         assertThatExceptionOfType(StatusRuntimeException.class)
                 .isThrownBy(() -> serviceBlockingStub.create(productRequest))
-                .withMessage("ALREADY_EXISTS: Produto Product A já cadastrado no sistema.");
+                .withMessage("ALREADY_EXISTS: Produto Product A já cadastrado no sistema");
 
     }
 }

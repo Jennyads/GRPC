@@ -1,35 +1,34 @@
-syntax= "proto3";
+syntax = "proto3";
 
 option java_package = "br.com.content4devs";
 option java_multiple_files = true;
 
-//http://localhost:3000/br.com.content4devs.HelloService.Hello
 package br.com.content4devs;
 
-service ProductService { //aqui estou definindo tipo de serviço
-  rpc Create(ProductRequest) returns(ProductResponse);  //é como se fosse criação de interface
-  rpc FindById(RequestById) returns(ProductResponse);
-  rpc Delete(RequestById) returns(ProductResponse);
+service ProductService {
+  rpc Create(ProductRequest) returns (ProductResponse);
+  rpc FindById(RequestById) returns (ProductResponse);
+  rpc Delete(RequestById) returns (EmptyResponse);
   rpc FindAll(EmptyRequest) returns (ProductResponseList);
-
 }
-message ProductResponseList{
-  repeated ProductResponse products =1; //como se fosse array, lista de produtos
-}
-message EmptyRequest{}
-message EmptyResponse{}
 
+message ProductResponseList {
+  repeated ProductResponse products = 1;
+}
+
+message EmptyRequest {}
+message EmptyResponse {}
 
 message RequestById {
   int64 id = 1;
 }
 
 message ProductRequest {
-  string name = 1;//números são assigning field numbers (flag) que o protobuf utiliza para na hora que serializar os dados, saber posicionamente onde está os tipos de mensagens
+  string name = 1;
   double price = 2;
   int32 quantity_in_stock = 3;
-
 }
+
 message ProductResponse {
   int64 id = 1;
   string name = 2;
