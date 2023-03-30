@@ -16,6 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.*;
 
+
 @SpringBootTest
 @TestPropertySource("classpath:application-test.properties")
 @DirtiesContext
@@ -80,4 +81,39 @@ public class ProductResourceIntegrationTest {
                 .withMessage("NOT_FOUND: Produto com id 100 não encontrado.");
 
     }
+    @Test
+    @DisplayName("when delete is call with id should does not throw")
+    public void deleteSucessTest() {
+        RequestById request = RequestById.newBuilder().setId(1L).build();
+
+        assertThatNoException().isThrownBy(() -> serviceBlockingStub.delete(request));
+
+    }
+    @Test
+    @DisplayName("when delete is call with invalid id throws ProductNotFoundException")
+    public void deleteExceptionTest() {
+        RequestById request = RequestById.newBuilder().setId(100L).build();
+
+        assertThatExceptionOfType(StatusRuntimeException.class)
+                .isThrownBy(() -> serviceBlockingStub.delete(request))
+                .withMessage("NOT_FOUND: Produto com id 100 não encontrado.");
+
+    }
+    @Test
+    @DisplayName("when findAll method is call a product list is returned")
+    public void findAllSuccessTest() {
+        EmptyRequest request = EmptyRequest.newBuilder().build();
+
+        ProductResponseList responseList = serviceBlockingStub.findAll(request);
+
+        assertThat(responseList).isInstanceOf(ProductResponseList.class);
+        assertThat(responseList.getProductsCount()).isEqualTo(2);
+        assertThat(responseList.getProductsList())
+                .extracting("id", "name", "price", "quantityInStock")
+                .contains(
+                        tuple(1L, "Product A", 10.99, 10),
+                        tuple(2L, "Product B", 10.99, 10)
+                );
+    }
+
 }

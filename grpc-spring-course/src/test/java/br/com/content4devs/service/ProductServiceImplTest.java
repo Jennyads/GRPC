@@ -13,15 +13,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceImplTest {
@@ -31,31 +31,32 @@ public class ProductServiceImplTest {
     @InjectMocks
     private ProductServiceImpl productService;
 
-
     @Test
     @DisplayName("when create product service is call with valid data a product is returned")
-    public void createProductSucessTest() {
+    public void createProductSuccessTest() {
         Product product = new Product(1L, "product name", 10.00, 10);
+
         when(productRepository.save(any())).thenReturn(product);
 
         ProductInputDTO inputDTO = new ProductInputDTO("product name", 10.00, 10);
         ProductOutputDTO outputDTO = productService.create(inputDTO);
 
-        Assertions.assertThat(outputDTO)
+        assertThat(outputDTO)
                 .usingRecursiveComparison()
                 .isEqualTo(product);
     }
+
     @Test
-    @DisplayName("when create product service is call with duplicated name, throw ProductAlreadyExiistsException")
+    @DisplayName("when create product service is call with duplicated name, throw ProductAlreadyExistsException")
     public void createProductExceptionTest() {
         Product product = new Product(1L, "product name", 10.00, 10);
+
         when(productRepository.findByNameIgnoreCase(any())).thenReturn(Optional.of(product));
 
         ProductInputDTO inputDTO = new ProductInputDTO("product name", 10.00, 10);
 
-        Assertions.assertThatExceptionOfType(ProductAlreadyExistsException.class)
-                .isThrownBy(()-> productService.create(inputDTO));
-
+        assertThatExceptionOfType(ProductAlreadyExistsException.class)
+                .isThrownBy(() -> productService.create(inputDTO));
     }
     @Test
     @DisplayName("when findById product is call with valid id a product is returned")
@@ -102,6 +103,24 @@ public class ProductServiceImplTest {
         assertThatExceptionOfType(ProductNotFoundException.class)
                 .isThrownBy(() -> productService.delete(id));
     }
+    @Test
+    @DisplayName("when findAll product is call a list of product is returned")
+    public void findAllSuccessTest() {
+        List<Product> products = List.of(
+                new Product(1L, "product name", 10.00, 10),
+                new Product(2L, "other product name", 10.00, 100)
+        );
 
+        when(productRepository.findAll()).thenReturn(products);
+
+        List<ProductOutputDTO> outputDTOS = productService.findAll();
+
+        assertThat(outputDTOS)
+                .extracting("id", "name", "price", "quantityInStock")
+                .contains(
+                        tuple(1L, "product name", 10.00, 10),
+                        tuple(2L, "other product name", 10.00, 100)
+                );
+    }
 
 }

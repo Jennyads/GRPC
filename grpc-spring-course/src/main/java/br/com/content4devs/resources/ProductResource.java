@@ -1,14 +1,14 @@
 package br.com.content4devs.resources;
 
-import br.com.content4devs.ProductRequest;
-import br.com.content4devs.ProductResponse;
-import br.com.content4devs.ProductServiceGrpc;
-import br.com.content4devs.RequestById;
+import br.com.content4devs.*;
 import br.com.content4devs.dto.ProductInputDTO;
 import br.com.content4devs.dto.ProductOutputDTO;
 import br.com.content4devs.service.IproductService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @GrpcService
 public class ProductResource extends ProductServiceGrpc.ProductServiceImplBase {
@@ -52,4 +52,33 @@ public class ProductResource extends ProductServiceGrpc.ProductServiceImplBase {
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void delete(RequestById request, StreamObserver<EmptyResponse> responseObserver) {
+        productService.delete(request.getId());
+        responseObserver.onNext(EmptyResponse.newBuilder().build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void findAll(EmptyRequest request, StreamObserver<ProductResponseList> responseObserver) {
+        List<ProductOutputDTO> outputDTOList = productService.findAll();
+        List<ProductResponse> productResponseList = outputDTOList.stream()
+                .map(outputDTO ->
+                        ProductResponse.newBuilder()
+                                .setId(outputDTO.getId())
+                                .setName(outputDTO.getName())
+                                .setPrice(outputDTO.getPrice())
+                                .setQuantityInStock(outputDTO.getQuantityInStock())
+                                .build())
+                .collect(Collectors.toList());
+
+        ProductResponseList response = ProductResponseList.newBuilder()
+                .addAllProducts(productResponseList)
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
 }
